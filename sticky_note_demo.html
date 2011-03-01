@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">				
+		<title>Sticky Note Demo</title>
+		<link rel="shortcut icon" href="favicon.ico"/>
+		
+		<link type="text/css" rel="stylesheet" href="css/main.css"/>		
+		<link href="http://fonts.googleapis.com/css?family=Chewy:regular" rel="stylesheet" type="text/css"/>
+		
+		<script type="text/javascript" src="js/jquery/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="js/json2.js"></script>
+		
+		<script type="text/javascript">
+			var notes;
+			var count = 0;
+			
+			function addNoteEvent(noteElement) {
+				noteElement.focus(function () {
+					$(this).find(".img").removeClass("hide");
+				}).hover(function() {
+					$(this).find("img").removeClass("hide");
+				}, function () {
+					$(this).find("img").addClass("hide");
+				});
+			};
+			
+			//  adds a new note to the 'notes' list
+			function addNewNote(className, title, content) {
+				// if class is not specified, use a random colour class
+				if (!className) {
+					className = "colour" + Math.ceil(Math.random() * 3);
+				}
+				
+				// add a new note to the end of the list
+	            notes.append("<li><div class='" + className + "'>" + 
+							 "<textarea class='note-title' placeholder='Untitled' maxlength='10'/>" + 
+							 "<textarea class='note-content' placeholder='Your content here'/>" + 
+							 "<img class='hide' src='images/close.png'/>" + 
+							 "</div></li>");
+				
+				// get the new note that's just been added and attach the click event handler to its close button
+				var newNote = notes.find("li:last");
+				newNote.find("img").click(function() {
+					newNote.remove();
+				});
+				
+				// hook up event handlers to show/hide close button as appropriate
+				addNoteEvent(newNote);
+				
+				// if a title is provided then set the title of the new note
+				if (title) {
+					// get the title textarea element and set its value
+					newNote.find("textarea.note-title").val(title);
+				}
+				
+				// if a content is provided then set the content of the new note
+				if (content) {
+					// get the content textarea element and set its value
+					newNote.find("textarea.note-content").val(content);					
+				}				
+			};
+			
+			$(document).ready(function() {
+				notes = $("#notes"); // get references to the 'notes' list
+				
+				// load notes from local storage if one's available
+				var storedNotes = localStorage.getItem("notes");
+				if (storedNotes)
+				{
+					// passes the stored json back into an array of note objects
+					var notesArray = JSON.parse(storedNotes);
+					count = notesArray.length;
+					
+					for (var i = 0; i < count; i++) {
+						var storedNote = notesArray[i];
+						addNewNote(storedNote.Class, storedNote.Title, storedNote.Content);
+					}
+				}
+				
+				// clicking the 'New Note' button adds a new note to the list
+				$("#btnNew").click(function() {
+					addNewNote();
+				});
+				
+				// clicking the 'Save' button saves the state of the notes board to the local storage				
+				$("#btnSave").click(function() {
+					var notesArray = new Array();
+					
+					// for each of the notes add a bespoke note object to the array
+					notes.find("li > div").each(function (i, e) {
+						// save the class attribute of the div, as well as the text for the title and content text areas
+						var colourClass = $(e).attr("class");
+						var title = $(e).find("textarea.note-title");
+						var content = $(e).find("textarea.note-content");
+												
+						notesArray.push({ Index: i, Title: title.val(), Content: content.val(), Class: colourClass });
+					});
+					
+					// json encode it
+					var jsonStr = JSON.stringify(notesArray);
+					
+					// and save the json string into local storage
+					localStorage.setItem("notes", jsonStr);
+					
+					// info the user it's done
+					alert("Notes saved");
+				});
+				
+				// add a note to the list if there aren't any
+				if (count == 0)
+				{
+					$("#btnNew").click();
+				}
+			});
+		</script>
+		
+		<script type="text/javascript">
+
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-12216268-1']);
+			_gaq.push(['_setDomainName', '.theburningmonk.com']);
+			_gaq.push(['_trackPageview']);
+	
+			(function () {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+
+		</script>
+	</head>
+	
+	<body>
+		<div id="controls">
+			<img id="btnNew" src="images/newnote.png"/>
+			<img id="btnSave" src="images/save.png"/>
+		</div>
+		
+		<ul id="notes">
+		</ul>
+	</body>
+</html>
