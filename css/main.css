@@ -14,6 +14,9 @@ body {
 	color: #fff;
 }
 
+/******************************
+ *      C O N T R O L S       *
+ ******************************/
 #controls img {
 	width: 28px;
 	height: 30px;
@@ -27,6 +30,9 @@ body {
   	position:relative;
 }
 
+/************************
+ *      N O T E S       *
+ ************************/
 ul, li {
 	list-style: none;
 }
@@ -68,7 +74,7 @@ ul li div img {
 }
 
 ul li textarea {
-	font-family: 'Chewy', arial, sans-serif;	
+	font-family: 'Chewy', arial, sans-serif;
 	background: rgba(0, 0, 0, 0); /* transparent background */
 	resize: none;
 	padding: 3px;
