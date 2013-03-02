@@ -12,7 +12,7 @@ write stuffs on them, and save them of course!
 
 LIVE DEMO:
 
-You can try the live demo at http://stickynote.theburningmonk.com or http://lnk.by/fhbba.
+You can try the live demo at http://stickynote.theburningmonk.com or http://bit.ly/Ygflem.
 
 THIRD-PARTY LIBRARIES:
 * jQuery (in js/jquery)
