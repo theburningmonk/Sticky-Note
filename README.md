@@ -24,7 +24,3 @@ CSS:
 HTML:
 * sticky_note_demo.html: This file contains all the HTML markup for the application, as well as all
 the javascript for the app
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/theburningmonk/sticky-note/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
